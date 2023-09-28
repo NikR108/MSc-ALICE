@@ -1,0 +1,20 @@
+
+This is the best cnn model from the 2nd tuning round of cnns
+
+
+
+model params 
+-------------
+
+conv kernel size = 3
+maxpoolsize = 3
+dropout1 = 0.1
+conv activation = relu
+num conv filters = 120 
+dropout2 = 0.3
+
+hidden neurons = 64
+
+hidden activation = relu
+
+

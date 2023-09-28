@@ -1,0 +1,69 @@
+---
+title: "tune1 results"
+output: html_document
+date: '2022-11-24'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+library(tidyverse)
+```
+
+```{r}
+df <- read.csv("tune1.csv")
+```
+
+```{r}
+head(df)
+```
+
+```{r}
+names(df)
+```
+```{r}
+str(df)
+```
+
+
+```{r}
+unique(df$kernel_size)
+unique(df$poolsize)
+unique(df$Dropout)
+unique(df$Activation)
+unique(df$Filters)
+```
+
+```{r}
+ggplot(data = df) + 
+  geom_point(aes(x=Filters, y=val_acc, col=Activation, size=Dropout), alpha=0.7) +
+  theme_bw()
+```
+
+```{r}
+ggplot(data=df) +
+  geom_point(aes(x=Filters, y=val_acc, col=Activation, shape=factor(poolsize))) +
+  geom_line(aes(x=Filters, y=val_acc, col=Activation, lty=factor(poolsize))) +
+  facet_grid(Dropout~kernel_size) + 
+  theme_bw()
+```
+
+```{r}
+ggplot(data=df) +
+  geom_point(aes(x=Filters, y=val_auc_pr, col=Activation, shape=factor(poolsize)), size=2) +
+  geom_line(aes(x=Filters, y=val_auc_pr, col=Activation, lty=factor(poolsize))) +
+  facet_grid(Dropout~kernel_size) + 
+  labs(x="Number of Convolution filters",
+       y="Validation AUC (Precision-Recall)")+
+  theme_bw()
+```
+
+
+```{r}
+df %>% arrange(desc(val_auc_pr))
+```
+

@@ -1,0 +1,48 @@
+---
+title: "ann-tune1-visuals"
+output: html_document
+date: '2022-11-27'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+```
+
+
+```{r}
+df <- read.csv("ANNtune1.csv")
+```
+
+
+```{r}
+names(df)
+```
+
+
+```{r}
+ggplot(data=df) + 
+  geom_point(aes(x=Hidden_neurons, y=val_auc_pr, col=Activation)) +
+  geom_line(aes(x=Hidden_neurons, y=val_auc_pr, col=Activation)) + 
+  facet_wrap(~Dropout, ncol = 3) + 
+  labs(x="Neurons in Hidden layer", y="Validation AUC (Precision-Recall)")+
+  theme_bw()
+```
+
+```{r}
+df %>% arrange(desc(val_auc_pr))
+```
+
+```{r}
+ggplot(data=df) + 
+  geom_point(aes(x=Hidden_neurons, y=val_acc, col=Activation)) +
+  geom_line(aes(x=Hidden_neurons, y=val_acc, col=Activation)) + 
+  facet_wrap(~Dropout, ncol = 3) + 
+  labs(x="Neurons in Hidden layer", y="Validation Accuracy")+
+  theme_bw()
+```
+

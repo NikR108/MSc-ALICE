@@ -1,0 +1,73 @@
+---
+title: "tune2-visuals"
+output: html_document
+date: '2022-11-27'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(ggpubr)
+```
+
+```{r}
+df <- read.csv("tune2.csv")
+```
+
+
+```{r}
+names(df)
+```
+
+```{r}
+str(df)
+```
+
+```{r}
+# Lets rename some of the variable names 
+
+df1 <- df %>% rename(MaxPoolSize=poolsize)
+
+```
+
+```{r}
+unique(df1$kernel_size)
+unique(df1$MaxPoolSize)
+unique(df1$Dropout_1)
+unique(df1$Activation_conv2D)
+unique(df1$Filters)
+unique(df1$Dropout_2)
+unique(df1$Hidden_neurons)
+unique(df1$Dense_Activation)
+```
+
+
+
+```{r}
+ggplot(data = df1) + 
+  geom_point(aes(x=Hidden_neurons, y=val_auc_pr, col=Dense_Activation))+
+  geom_line(aes(x=Hidden_neurons, y=val_auc_pr, col=Dense_Activation)) +
+  facet_grid(Dropout_2~Filters) + 
+  labs(x="Number of hidden neurons", y="Validation AUC (Precision-Recall)") + 
+  theme_bw()
+```
+```{r}
+ggplot(data = df1) + 
+  geom_point(aes(x=Hidden_neurons, y=val_acc, col=Dense_Activation))+
+  geom_line(aes(x=Hidden_neurons, y=val_acc, col=Dense_Activation)) +
+  facet_grid(Dropout_2~Filters) + 
+  labs(x="Number of hidden neurons", y="Validation Accuracy") + 
+  theme_bw()
+```
+
+
+```{r}
+df1 %>% arrange(desc(val_auc_pr))
+```
+
